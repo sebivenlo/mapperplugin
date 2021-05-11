@@ -5,7 +5,7 @@
         <groupId>nl.fontys.sebivenlo</groupId>
         <artifactId>sebipom</artifactId>
         <!--  defaults to java release 11 -->
-        <version>3.0.0</version>
+        <version>3.0.3</version>
         <relativePath/>
     </parent>
     <groupId>sampleparent</groupId>
