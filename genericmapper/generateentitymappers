@@ -1,0 +1,11 @@
+#!/bin/bash
+scriptdir=$(dirname $(readlink -f $0))
+version=2.2.0
+packages=""
+if [ $# -gt 0 ]; then
+    packages=$1; shift
+fi
+jar=${scriptdir}/target/genericmapper-${version}-jar-with-dependencies.jar
+#echo "jar=${jar}"
+java -cp ${jar}:target/classes:target/test-classes genericmapper.MapperGeneratorRunner ${packages}
+

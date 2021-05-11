@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-test-compile</actionName>
+            <displayName>test-compile</displayName>
+            <goals>
+                <goal>compile</goal>
+                <goal>test-compile</goal>
+            </goals>
+        </action>
+    </actions>
