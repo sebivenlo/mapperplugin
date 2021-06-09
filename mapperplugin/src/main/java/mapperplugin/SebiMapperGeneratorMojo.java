@@ -77,7 +77,9 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
 
     void makeTargetDirs() throws IOException {
         List<String> elements
-                = List.of( "target/classes", "target/test-classes" );
+                = List.of( "target" + fileSep
+                        + "classes", "target" + fileSep
+                        + "/test-classes" );
         for ( String element : elements ) {
             Path p = Path.of( project.getBasedir() + fileSep + element );
             Files.createDirectories( p );
@@ -133,14 +135,15 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
 
     String getDependencyJars() {
         List<Dependency> dependencies = project.getDependencies();
-        String repo = System.getProperty( "user.home" ) + "/.m2/repository";
+        String repo = System.getProperty( "user.home" )
+                + fileSep + ".m2" + fileSep + "repository";
         return dependencies.stream()
                 .map( ( Dependency d ) -> {
-                    String gid = d.getGroupId().replaceAll( "\\.", fileSep );
+                    String gid = d.getGroupId().replace( ".", fileSep );
                     String artifactId = d.getArtifactId();
                     String version = d.getVersion();
                     var jar = artifactId + "-" + version + ".jar";
-                    return String.join( "/", repo, gid,
+                    return String.join( fileSep, repo, gid,
                             artifactId, version, jar );
 
                 } )

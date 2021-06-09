@@ -39,7 +39,7 @@ public class GeneratorRunner {
         String[] packageNames = packNames.toArray( String[]::new );
         String[] allParams = joinArrays( commandParams, packageNames );
         processBuilder.command( allParams );
-//        processBuilder.command().forEach( System.out::println );
+        processBuilder.command().forEach( c -> System.out.println("[INFO] "+c));
         Process process = processBuilder.start();
         BufferedReader reader
                 = new BufferedReader( new InputStreamReader( process
