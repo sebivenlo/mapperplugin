@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <repositories>
+        <repository> 
+            <id>fontysvenlo.org</id> 
+            <url>https://www.fontysvenlo.org/repository</url> 
+        </repository> 
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>fontysvenlo.org</id> 
+            <url>https://www.fontysvenlo.org/repository</url> 
+        </pluginRepository>
+    </pluginRepositories>
     <parent>
         <groupId>nl.fontys.sebivenlo</groupId>
         <artifactId>sebipom</artifactId>
         <!--  defaults to java release 11 -->
-        <version>3.0.3</version>
+        <version>3.0.4</version>
         <relativePath/>
     </parent>
     <groupId>sampleparent</groupId>
@@ -14,10 +26,26 @@
     <packaging>pom</packaging>
     <name>sampleparent :: solution-base</name>
     <properties>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <modules>
-      <module>../sampleentities</module>
+        <module>../sampleentities</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>nl.fontys.sebivenlo</groupId>
+                <artifactId>sebiannotations</artifactId>
+                <version>1.0</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>nl.fontys.sebivenlo</groupId>
+                <artifactId>genericmapper</artifactId>
+                <version>3.0.2</version>        
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>
 </project>
 

@@ -1,11 +1,10 @@
 package mapperplugin;
 
+import genericmapper.GetterNamingStrategy;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import static java.nio.file.attribute.PosixFilePermissions.asFileAttribute;
-import static java.nio.file.attribute.PosixFilePermissions.fromString;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,7 +14,6 @@ import java.util.stream.Stream;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -71,6 +69,9 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
     @Parameter( property = "mapper.generator.classesDir", defaultValue = "false" )
     protected String classesDir;
 
+    @Parameter( property = "mapper.generator.classesDir", defaultValue = "BEAN" )
+    protected GetterNamingStrategy getterNameStrategy;
+
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
@@ -79,8 +80,7 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
                 = List.of( "target/classes", "target/test-classes" );
         for ( String element : elements ) {
             Path p = Path.of( project.getBasedir() + fileSep + element );
-            Files.createDirectories( p, asFileAttribute( fromString(
-                    "rwxr-xr-x" ) ) );
+            Files.createDirectories( p );
         }
     }
 

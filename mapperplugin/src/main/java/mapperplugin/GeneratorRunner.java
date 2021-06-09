@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-import static java.util.stream.Collectors.joining;
 
 /**
  * Generates mappers for named Types. The types are fully qualified types to be
