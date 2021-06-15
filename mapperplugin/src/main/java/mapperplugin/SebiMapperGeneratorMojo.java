@@ -73,13 +73,21 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
     protected GetterNamingStrategy getterNameStrategy;
 
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
+    MavenProject project;
 
+    SebiMapperGeneratorMojo( MavenProject project ) {
+        this.project = project;
+    }
+
+    public SebiMapperGeneratorMojo() {
+    }
+
+    
     void makeTargetDirs() throws IOException {
         List<String> elements
                 = List.of( "target" + fileSep
                         + "classes", "target" + fileSep
-                        + "/test-classes" );
+                        + "test-classes" );
         for ( String element : elements ) {
             Path p = Path.of( project.getBasedir() + fileSep + element );
             Files.createDirectories( p );
@@ -116,7 +124,7 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
         return allOpts;
     }
 
-    public String[] getSourceFiles( String startDir ) {
+    String[] getSourceFiles( String startDir ) {
         String[] result = null;
         try ( Stream<Path> stream = Files.walk( Paths.get( startDir ),
                 Integer.MAX_VALUE ) ) {
