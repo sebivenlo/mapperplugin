@@ -1,8 +1,6 @@
 package mapperplugin;
 
-import java.util.List;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
