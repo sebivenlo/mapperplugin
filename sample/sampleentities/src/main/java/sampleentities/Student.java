@@ -12,6 +12,8 @@ import nl.fontys.sebivenlo.sebiannotations.ID;
  */
 public class Student implements Serializable {
 
+    @ID
+    private final Integer snummer;
     private final String lastname;
     private final String tussenvoegsel;
     private final String firstname;
@@ -20,8 +22,6 @@ public class Student implements Serializable {
     private final String email;
     private final String gender;
     private final String student_class;
-    @ID
-    private final Integer snummer;
     private final Boolean active;
 
     public Student( Integer snummer, String lastname, String tussenvoegsel,

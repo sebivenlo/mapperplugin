@@ -8,17 +8,20 @@ import nl.fontys.sebivenlo.sebiannotations.ID;
  * @author "Pieter van den Hombergh {@code p.vandenhombergh@fontys.nl}"
  */
 public class Car {
+
     @ID
     final String brand;
     final String color;
     final Engine engine;
     final Door[] doors;
+    final List<String> wheels;
 
-    public Car( String brand, String color, Engine engine ) {
+    public Car(String brand, String color, Engine engine, Door[] doors, List<String> wheels) {
         this.brand = brand;
         this.color = color;
         this.engine = engine;
-        doors = new Door[]{ new Door("leftDoor", "red"),new Door("rightDoor","white")};
+        this.doors = doors;
+        this.wheels = wheels;
     }
 
     public String getBrand() {
@@ -37,17 +40,14 @@ public class Car {
         return doors;
     }
 
-    
     @Override
     public String toString() {
         return "Car{" + "brand=" + brand + ", color=" + color + ", engine=" + engine + '}';
     }
 
-    List<String> wheels = List.of( "FronLeft", "FronRight", "RearLeft",
-            "RearRight" );
 
     public List<String> getWheels() {
         return wheels;
     }
-  
+
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import nl.fontys.sebivenlo.sebiannotations.ID;
-
 /**
  * Simple student with LocalDate birthday.
  *
@@ -12,6 +11,8 @@ import nl.fontys.sebivenlo.sebiannotations.ID;
  */
 public class Student implements Serializable {
 
+    @ID
+    private final Integer snummer;
     private final String lastname;
     private final String tussenvoegsel;
     private final String firstname;
@@ -20,8 +21,6 @@ public class Student implements Serializable {
     private final String email;
     private final String gender;
     private final String student_class;
-    @ID
-    private final Integer snummer;
     private final Boolean active;
 
     public Student( Integer snummer, String lastname, String tussenvoegsel,
@@ -98,9 +97,6 @@ public class Student implements Serializable {
             return false;
         }
         final Student other = (Student) obj;
-        if ( !Objects.equals( this.snummer, other.snummer ) ) {
-            return false;
-        }
-        return true;
+        return Objects.equals( this.snummer, other.snummer );
     }
 }
