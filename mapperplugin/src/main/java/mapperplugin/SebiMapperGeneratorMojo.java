@@ -1,12 +1,15 @@
 package mapperplugin;
 
 import genericmapper.GetterNamingStrategy;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.util.stream.Collectors.joining;
@@ -44,7 +47,6 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        String baseDir = project.getBasedir().toString();
         try {
             makeTargetDirs();
             compileSources();
@@ -62,6 +64,15 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
 
     @Parameter( property = "mapper.entities.packages", defaultValue = "false" )
     protected List<String> entityPackages;
+    
+    private final Set<String> entityDirTails = new HashSet<>();
+
+    /**
+     * compile extra packages that or not entity packages, e.g. to compile user
+     * types.
+     */
+    @Parameter( property = "mapper.entities.compilePackages", defaultValue = "false" )
+    protected List<String> compilePackages;
 
     @Parameter( property = "mapper.generator.outDir", defaultValue = "false" )
     protected String outDir;
@@ -117,11 +128,6 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
                 .getCompileClasspathElements()
                 .stream()
                 .collect( joining( pathSep ) );
-        String testCompileClassPath = project
-                .getTestClasspathElements()
-                .stream()
-                .collect( joining( pathSep ) );
-        compileClassPath += pathSep +testCompileClassPath;
         String[] opts = { "-p", compileClassPath, "-cp", compileClassPath, "-d", targetDir };
         String[] allOpts = Arrays.copyOf( opts, opts.length + sources.length );
         System.arraycopy( sources, 0, allOpts, opts.length, sources.length );
@@ -129,19 +135,41 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
     }
 
     String[] getSourceFiles(String startDir) {
+        entityPackages.forEach( p -> {
+            entityDirTails.add( p.replace( ".", pathSep ) );
+        } );
+
+        if ( compilePackages != null ) {
+            compilePackages.forEach( p -> {
+                entityDirTails.add( p.replace( ".", pathSep ) );
+            } );
+        }
         String[] result = null;
         try (  Stream<Path> stream = Files.walk( Paths.get( startDir ),
                 Integer.MAX_VALUE ) ) {
             result = stream
-                    .filter( file -> !Files.isDirectory( file ) )
-                    .filter( file -> file.getFileName().toString().endsWith( ".java" ) )
+                    .filter( path -> !Files.isDirectory( path ) )
+                    .filter( this::isInEntityPackage )
+                    .filter( path -> path.getFileName().toString().endsWith( ".java" ) )
                     .map( Path::toString )
                     .toArray( String[]::new );
         } catch ( IOException ignored ) {
         }
-        System.out.println( "result = " + Arrays.toString( result ) );
+//        System.out.println( "result = " + Arrays.toString( result ) );
         return result;
     }
+
+    boolean isInEntityPackage(Path path) {
+        String parent = path.getParent().toString();
+        for ( String entityDirTail : entityDirTails ) {
+            boolean endsWith = parent.endsWith( entityDirTail );
+            if ( endsWith ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static String pathSep = System.getProperty( "path.separator" );
     static String fileSep = System.getProperty( "file.separator" );
 
