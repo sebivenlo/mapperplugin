@@ -22,8 +22,8 @@ public class FileNameTest {
                 "src/test/java/entities/Engine.java",
                 "src/test/java/entities/Person.java",
                 "src/test/java/entities/Student.java",
-                "src/test/java/entities/Tutor.java"
-        );
+                "src/test/java/entities/Tutor.java",
+                "src/test/java/mapperplugin/FileNameTest.java");
 //        fail( "method tGetSourceFiles reached end. You know what to do." );
     }
 
@@ -39,8 +39,8 @@ public class FileNameTest {
                 "src/test/java/entities/Engine.java",
                 "src/test/java/entities/Person.java",
                 "src/test/java/entities/Student.java",
-                "src/test/java/entities/Tutor.java"
-        );
+                "src/test/java/entities/Tutor.java",
+                "src/test/java/mapperplugin/FileNameTest.java");
 
 //        fail( "method tCompilerArgs reached end. You know what to do." );
     }

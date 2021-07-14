@@ -75,14 +75,13 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
     MavenProject project;
 
-    SebiMapperGeneratorMojo( MavenProject project ) {
+    SebiMapperGeneratorMojo(MavenProject project) {
         this.project = project;
     }
 
     public SebiMapperGeneratorMojo() {
     }
 
-    
     void makeTargetDirs() throws IOException {
         List<String> elements
                 = List.of( "target" + fileSep
@@ -104,38 +103,43 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
                 project.getBuild().getOutputDirectory() );
     }
 
-    int runCompiler( String sources, String outDir ) throws
+    int runCompiler(String sources, String outDir) throws
             DependencyResolutionRequiredException {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         String[] compilerArguments = makeCompilerArguments( sources, outDir );
         return compiler.run( null, null, null, compilerArguments );
     }
 
-    String[] makeCompilerArguments( String sourceDir, String targetDir ) throws
+    String[] makeCompilerArguments(String sourceDir, String targetDir) throws
             DependencyResolutionRequiredException {
         String[] sources = getSourceFiles( sourceDir );
         String compileClassPath = project
                 .getCompileClasspathElements()
                 .stream()
                 .collect( joining( pathSep ) );
+        String testCompileClassPath = project
+                .getTestClasspathElements()
+                .stream()
+                .collect( joining( pathSep ) );
+        compileClassPath += pathSep +testCompileClassPath;
         String[] opts = { "-p", compileClassPath, "-cp", compileClassPath, "-d", targetDir };
         String[] allOpts = Arrays.copyOf( opts, opts.length + sources.length );
         System.arraycopy( sources, 0, allOpts, opts.length, sources.length );
         return allOpts;
     }
 
-    String[] getSourceFiles( String startDir ) {
+    String[] getSourceFiles(String startDir) {
         String[] result = null;
-        try ( Stream<Path> stream = Files.walk( Paths.get( startDir ),
+        try (  Stream<Path> stream = Files.walk( Paths.get( startDir ),
                 Integer.MAX_VALUE ) ) {
             result = stream
                     .filter( file -> !Files.isDirectory( file ) )
-                    .filter( file -> file.getFileName().toString().endsWith(
-                    ".java" ) )
+                    .filter( file -> file.getFileName().toString().endsWith( ".java" ) )
                     .map( Path::toString )
                     .toArray( String[]::new );
         } catch ( IOException ignored ) {
         }
+        System.out.println( "result = " + Arrays.toString( result ) );
         return result;
     }
     static String pathSep = System.getProperty( "path.separator" );
@@ -146,7 +150,7 @@ public class SebiMapperGeneratorMojo extends AbstractMojo {
         String repo = System.getProperty( "user.home" )
                 + fileSep + ".m2" + fileSep + "repository";
         return dependencies.stream()
-                .map( ( Dependency d ) -> {
+                .map( (Dependency d) -> {
                     String gid = d.getGroupId().replace( ".", fileSep );
                     String artifactId = d.getArtifactId();
                     String version = d.getVersion();
