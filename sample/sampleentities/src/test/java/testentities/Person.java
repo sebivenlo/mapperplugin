@@ -11,12 +11,14 @@ import nl.fontys.sebivenlo.sebiannotations.ID;
  */
 public class Person implements Serializable {
 
+    private static final long serialVersionUID=1L;
     @ID
     private final String firstname;
     private final String lastname;
     private final String tussenvoegsel;
     private final LocalDate dob;
     private final String gender;
+    
 
     public Person( String lastname, String tussenvoegsel, String firstname,
             LocalDate dob, String gender ) {

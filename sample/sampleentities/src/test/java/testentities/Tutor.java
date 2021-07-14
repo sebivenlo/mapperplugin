@@ -1,6 +1,9 @@
 package testentities;
 
 import java.time.LocalDate;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import nl.fontys.sebivenlo.sebiannotations.ID;
 
 /**
@@ -15,6 +18,14 @@ public class Tutor extends Person {
     private final String teaches;
     private final String email;
 
+    private static final Predicate<String> EMAILTEST = Pattern.compile(
+            "'^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+"
+            + "@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}"
+            + "[a-zA-Z0-9])?"
+            + "(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}"
+            + "[a-zA-Z0-9])?)*$", CASE_INSENSITIVE
+    ).asPredicate();
+
     public Tutor(
             String firstname,
             String lastname,
@@ -24,7 +35,7 @@ public class Tutor extends Person {
             int employeeNumber,
             String academicTitle,
             String teaches,
-            String email ) {
+            String email) {
         super( firstname, lastname, tussenvoegsel, dob, gender );
         this.academicTitle = academicTitle;
         this.teaches = teaches;
@@ -32,9 +43,9 @@ public class Tutor extends Person {
         this.employeeNumber = employeeNumber;
     }
 
-    public Tutor( int employeNumber, String academicTitle, String teaches,
+    public Tutor(int employeNumber, String academicTitle, String teaches,
             String email, String lastname, String tussenvoegsel,
-            String firstname, LocalDate dob, String gender ) {
+            String firstname, LocalDate dob, String gender) {
         super( lastname, tussenvoegsel, firstname, dob, gender );
         this.employeeNumber = employeNumber;
         this.academicTitle = academicTitle;
@@ -50,7 +61,7 @@ public class Tutor extends Person {
     }
 
     @Override
-    public boolean equals( Object obj ) {
+    public boolean equals(Object obj) {
         if ( this == obj ) {
             return true;
         }
@@ -89,5 +100,4 @@ public class Tutor extends Person {
         return email;
     }
 
-    
 }
